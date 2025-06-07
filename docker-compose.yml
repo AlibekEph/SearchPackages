@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  package-manager:
+    build:
+      context: .
+      dockerfile: fedora.dockerfile
+    volumes:
+      - .:/workspace
+    working_dir: /workspace # Keep container running
+
+  dino-detector:
+    build:
+      context: .
+      dockerfile: dino_detector.dockerfile
+    ports:
+      - "8008:8008"
+    volumes:
+      - ./dino_detector.py:/app/dino_detector.py
+      - ./requirements.txt:/app/requirements.txt
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python dino_detector.py 
